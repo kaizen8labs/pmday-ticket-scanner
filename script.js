@@ -22,7 +22,7 @@ document.getElementById('scanBtn').addEventListener('click', () => {
         const html5QrCode = new Html5Qrcode("video");
         html5QrCode.start(
           { facingMode: "environment" },
-          { fps: 10, qrbox: 250 },
+          { fps: 10 },
           qrCodeMessage => {
             qrResult.textContent = qrCodeMessage;
   
