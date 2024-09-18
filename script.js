@@ -50,10 +50,10 @@ document.getElementById('scanBtn').addEventListener('click', () => {
             })
             .then(data => {
               responseData.textContent = `
-                ID: ${data.id}
-                Amount: ${data.amount}
-                Status: ${data.status}
-                Created At: ${data.created_at}
+                ID: ${data.data.id}
+                Amount: ${data.data.amount}
+                Status: ${data.data.status}
+                Created At: ${data.data.created_at}
               `;
             })
             .catch(err => {
