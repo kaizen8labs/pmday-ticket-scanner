@@ -20,7 +20,7 @@ document.getElementById('scanBtn').addEventListener('click', () => {
   
 
         const html5QrCode = new Html5Qrcode(
-            "reader", { formatsToSupport: [ Html5QrcodeSupportedFormats.QR_CODE ] });
+            "video", { formatsToSupport: [ Html5QrcodeSupportedFormats.QR_CODE ] });
           const qrCodeSuccessCallback = (decodedText, decodedResult) => {
             qrResult.textContent = qrCodeMessage;
   
