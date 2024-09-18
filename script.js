@@ -18,12 +18,10 @@ document.getElementById('scanBtn').addEventListener('click', () => {
         video.setAttribute('playsinline', true); // Ensures iOS plays it properly
         video.play();
   
-        // Start the QR code scanner
-        const html5QrCode = new Html5Qrcode("video");
-        html5QrCode.start(
-          { facingMode: "environment" },
-          { fps: 10 },
-          qrCodeMessage => {
+
+        const html5QrCode = new Html5Qrcode(
+            "reader", { formatsToSupport: [ Html5QrcodeSupportedFormats.QR_CODE ] });
+          const qrCodeSuccessCallback = (decodedText, decodedResult) => {
             qrResult.textContent = qrCodeMessage;
   
             // Stop scanning once a code is detected
@@ -61,11 +59,10 @@ document.getElementById('scanBtn').addEventListener('click', () => {
               responseData.textContent = 'Lỗi khi lấy thông tin từ API.';
               console.error('API error:', err);
             });
-          },
-          errorMessage => {
-            console.log(`QR Code no match: ${errorMessage}`);
-          }
-        );
+          };
+          const config = { fps: 10, qrbox: { width: 250, height: 250 } };
+          // If you want to prefer front camera
+          html5QrCode.start({ facingMode: "user" }, config, qrCodeSuccessCallback);
       })
       .catch(err => {
         console.error('Camera permission error:', err);
