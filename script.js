@@ -1,35 +1,36 @@
 // Thay thế các giá trị dưới đây bằng thông tin thực tế của bạn
 const CLIENT_ID = 'e2afa952-d255-4df8-aea2-7fe323f55bcf'; // Thay 'YOUR_CLIENT_ID' bằng Client ID thực tế của bạn
 const API_KEY = '2f53c721-acb2-44db-866a-21bddedeaeb7';     // Thay 'YOUR_API_KEY' bằng API Key thực tế của bạn
-
 document.getElementById('scanBtn').addEventListener('click', () => {
     const qrResult = document.getElementById('qrData');
     const responseData = document.getElementById('responseData');
     const video = document.getElementById('video');
   
-    // Clear any previous data
     qrResult.textContent = '';
     responseData.textContent = '';
   
-    // Access camera permissions and initialize the scanner
-    navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' } })
-      .then((stream) => {
-        video.srcObject = stream;
-        video.setAttribute('playsinline', true); // Ensures iOS plays it properly
-        video.play();
+    // Start the QR code scanner
+    const html5QrCode = new Html5Qrcode("video");
+    Html5Qrcode.getCameras().then(cameras => {
+      if (cameras && cameras.length) {
+        // Use the back camera if available
+        const cameraId = cameras[0].id;
   
-
-        const html5QrCode = new Html5Qrcode(
-            "video", { formatsToSupport: [ Html5QrcodeSupportedFormats.QR_CODE ] });
-          const qrCodeSuccessCallback = (decodedText, decodedResult) => {
-            qrResult.textContent = qrCodeMessage;
+        html5QrCode.start(
+          cameraId, 
+          {
+            fps: 10,    // Optional: Scan 10 frames per second
+            qrbox: { width: 250, height: 250 }  // Optional: Define scanner box
+          },
+          qrCodeMessage => {
+            qrResult.textContent = `Scanned QR Code: ${qrCodeMessage}`;
   
-            // Stop scanning once a code is detected
+            // Stop the scanner after success
             html5QrCode.stop().then(() => {
-              video.srcObject.getTracks().forEach(track => track.stop()); // Stop video stream
-            });
+              console.log("QR Code scanning stopped.");
+            }).catch(err => console.error("Stop failed: ", err));
   
-            // Call the API with the scanned QR code
+            // Call your API with the scanned data
             const paymentRequestId = encodeURIComponent(qrCodeMessage.trim());
             const apiUrl = `https://api-merchant.payos.vn/v2/payment-requests/${paymentRequestId}`;
   
@@ -50,23 +51,26 @@ document.getElementById('scanBtn').addEventListener('click', () => {
             .then(data => {
               responseData.textContent = `
                 ID: ${data.id}
-                Số tiền: ${data.amount}
-                Trạng thái: ${data.status}
-                Ngày tạo: ${data.created_at}
+                Amount: ${data.amount}
+                Status: ${data.status}
+                Created At: ${data.created_at}
               `;
             })
             .catch(err => {
-              responseData.textContent = 'Lỗi khi lấy thông tin từ API.';
+              responseData.textContent = 'Error fetching API data.';
               console.error('API error:', err);
             });
-          };
-          const config = { fps: 10, qrbox: { width: 250, height: 250 } };
-          // If you want to prefer front camera
-          html5QrCode.start({ facingMode: "user" }, config, qrCodeSuccessCallback);
-      })
-      .catch(err => {
-        console.error('Camera permission error:', err);
-        alert('Không thể truy cập camera, vui lòng cấp quyền.');
-      });
+          },
+          errorMessage => {
+            console.warn(`QR Code scan failed: ${errorMessage}`);
+          }
+        ).catch(err => {
+          console.error("Unable to start scanning: ", err);
+        });
+      }
+    }).catch(err => {
+      console.error("Camera access error: ", err);
+      alert("Unable to access the camera. Please grant camera permissions.");
+    });
   });
   
