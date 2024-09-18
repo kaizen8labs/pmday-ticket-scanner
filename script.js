@@ -12,18 +12,12 @@ document.getElementById('scanBtn').addEventListener('click', () => {
   
     // Initialize the QR code reader
     const html5QrCode = new Html5Qrcode("qr-reader");
+
     Html5Qrcode.getCameras().then(cameras => {
       if (cameras && cameras.length) {
         const cameraId = cameras[0].id;
-        
-        html5QrCode.start(
-          cameraId,
-          {
-            fps: 10,
-            qrbox: { width: 250, height: 250 }
-          },
-          qrCodeMessage => {
-            qrResult.textContent = `Scanned QR Code: ${qrCodeMessage}`;
+        const qrCodeSuccessCallback = (decodedText, decodedResult) =>  {
+            qrResult.textContent = `Scanned QR Code: ${decodedText}`;
   
             // Stop scanner after QR code is detected
             html5QrCode.stop().then(() => {
@@ -31,7 +25,7 @@ document.getElementById('scanBtn').addEventListener('click', () => {
             }).catch(err => console.error("Stop failed: ", err));
   
             // Call the API with scanned QR code data
-            const paymentRequestId = encodeURIComponent(qrCodeMessage.trim());
+            const paymentRequestId = encodeURIComponent(decodedText.trim());
             const apiUrl = `https://api-merchant.payos.vn/v2/payment-requests/${paymentRequestId}`;
   
             fetch(apiUrl, {
@@ -61,13 +55,11 @@ document.getElementById('scanBtn').addEventListener('click', () => {
               responseData.textContent = 'Error fetching API data.';
               console.error('API error:', err);
             });
-          }, // This is where the closing parenthesis for html5QrCode.start() goes
-          errorMessage => {
-            console.warn(`QR Code scan failed: ${errorMessage}`);
-          }
-        ).catch(err => {
-          console.error("Unable to start scanning: ", err);
-        });
+          };
+        const config = { fps: 10, qrbox: { width: 250, height: 250 } };
+        
+        // If you want to prefer front camera
+        html5QrCode.start({ facingMode: "environment" }, config, qrCodeSuccessCallback);
       }
     }).catch(err => {
       console.error("Camera access error: ", err);
