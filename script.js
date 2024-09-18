@@ -5,10 +5,14 @@ const API_KEY = '2f53c721-acb2-44db-866a-21bddedeaeb7';     // Thay 'YOUR_API_KE
 
 document.getElementById('scanBtn').addEventListener('click', () => {
     const qrResult = document.getElementById('qrData');
-    const responseData = document.getElementById('responseData');
+    const responseTable = document.getElementById('responseTable');
+    const idData = document.getElementById('idData');
+    const amountData = document.getElementById('amountData');
+    const statusData = document.getElementById('statusData');
+    const createdAtData = document.getElementById('createdAtData');
   
     qrResult.textContent = '';
-    responseData.textContent = '';
+    responseTable.classList.add('hidden');
   
     // Initialize the QR code reader
     const html5QrCode = new Html5Qrcode("qr-reader");
@@ -43,16 +47,18 @@ document.getElementById('scanBtn').addEventListener('click', () => {
               return response.json();
             })
             .then(data => {
-                console.log(data);
-              responseData.textContent = `
-                ID: ${data.data.id}
-                Amount: ${data.data.amount}
-                Status: ${data.data.status}
-                Created At: ${data.data.created_at}
-              `;
+
+                // Populate the table with API data
+                idData.textContent = data.data.id;
+                amountData.textContent = data.data.amount;
+                statusData.textContent = data.data.status == 'PAID' ? '✅' : '🚫';
+                createdAtData.textContent = data.data.createdAt;
+
+                // Show the table
+                responseTable.classList.remove('hidden');
             })
             .catch(err => {
-              responseData.textContent = 'Error fetching API data.';
+              qrResult.textContent = 'Error fetching API data.';
               console.error('API error:', err);
             });
           };

@@ -8,11 +8,29 @@
 </head>
 <body>
   <div class="container">
-    <h1>QR Code Scanner 13</h1>
+    <h1>PM Day check-in tool v0.1</h1>
     <div id="qr-reader" style="width: 100%;"></div>
     <button id="scanBtn">Start Scanning</button>
     <p id="qrData"></p>
-    <p id="responseData"></p>
+    <!-- Table for displaying response data -->
+<table id="responseTable" class="hidden">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Amount</th>
+        <th>Status</th>
+        <th>Created At</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td id="idData"></td>
+        <td id="amountData"></td>
+        <td id="statusData"></td>
+        <td id="createdAtData"></td>
+      </tr>
+    </tbody>
+  </table>
   </div>
 
   <script src="html5-qrcode.min.js"></script>
