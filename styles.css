@@ -53,7 +53,7 @@ body {
   .response-container {
     display: flex;
     flex-direction: column;
-    width: 100%;
+    width: auto;
     margin: 20px;
     padding: 10px;
     border: 1px solid #ccc;
