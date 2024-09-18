@@ -21,7 +21,7 @@ document.getElementById('scanBtn').addEventListener('click', () => {
       if (cameras && cameras.length) {
         const cameraId = cameras[0].id;
         const qrCodeSuccessCallback = (decodedText, decodedResult) =>  {
-            qrResult.textContent = `Scanned QR Code: ${decodedText}`;
+            qrResult.textContent = `Ticket Order Code: ${decodedText}`;
   
             // Stop scanner after QR code is detected
             html5QrCode.stop().then(() => {
