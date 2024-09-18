@@ -2,6 +2,7 @@
 const CLIENT_ID = 'e2afa952-d255-4df8-aea2-7fe323f55bcf'; // Thay 'YOUR_CLIENT_ID' bằng Client ID thực tế của bạn
 const API_KEY = '2f53c721-acb2-44db-866a-21bddedeaeb7';     // Thay 'YOUR_API_KEY' bằng API Key thực tế của bạn
 
+
 document.getElementById('scanBtn').addEventListener('click', () => {
     const qrResult = document.getElementById('qrData');
     const responseData = document.getElementById('responseData');
@@ -39,26 +40,27 @@ document.getElementById('scanBtn').addEventListener('click', () => {
                 'x-client-id': CLIENT_ID,
                 'x-api-key': API_KEY,
                 'Content-Type': 'application/json'
-              })
-              .then(response => {
-                if (!response.ok) {
-                  throw new Error(`HTTP error! Status: ${response.status}`);
-                }
-                return response.json();
-              })
-              .then(data => {
-                responseData.textContent = `
-                  ID: ${data.id}
-                  Amount: ${data.amount}
-                  Status: ${data.status}
-                  Created At: ${data.created_at}
-                `;
-              })
-              .catch(err => {
-                responseData.textContent = 'Error fetching API data.';
-                console.error('API error:', err);
-              });
-          },
+              }
+            })
+            .then(response => {
+              if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+              }
+              return response.json();
+            })
+            .then(data => {
+              responseData.textContent = `
+                ID: ${data.id}
+                Amount: ${data.amount}
+                Status: ${data.status}
+                Created At: ${data.created_at}
+              `;
+            })
+            .catch(err => {
+              responseData.textContent = 'Error fetching API data.';
+              console.error('API error:', err);
+            });
+          }, // This is where the closing parenthesis for html5QrCode.start() goes
           errorMessage => {
             console.warn(`QR Code scan failed: ${errorMessage}`);
           }
