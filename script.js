@@ -18,7 +18,6 @@ document.getElementById('scanBtn').addEventListener('click', () => {
         
         html5QrCode.start(
           cameraId,
-          { facingMode: "environment" },
           {
             fps: 10,
             qrbox: { width: 250, height: 250 }
