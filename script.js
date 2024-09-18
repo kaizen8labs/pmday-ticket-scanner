@@ -14,7 +14,7 @@ document.getElementById('scanBtn').addEventListener('click', () => {
     const html5QrCode = new Html5Qrcode("qr-reader");
     Html5Qrcode.getCameras().then(cameras => {
       if (cameras && cameras.length) {
-        const cameraId = cameras[0].id;
+        const cameraId = cameras[1].id;
         
         html5QrCode.start(
           cameraId,
