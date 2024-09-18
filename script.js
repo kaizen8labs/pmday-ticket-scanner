@@ -14,10 +14,11 @@ document.getElementById('scanBtn').addEventListener('click', () => {
     const html5QrCode = new Html5Qrcode("qr-reader");
     Html5Qrcode.getCameras().then(cameras => {
       if (cameras && cameras.length) {
-        const cameraId = cameras[1].id;
+        const cameraId = cameras[0].id;
         
         html5QrCode.start(
           cameraId,
+          { facingMode: "environment" },
           {
             fps: 10,
             qrbox: { width: 250, height: 250 }
@@ -49,6 +50,7 @@ document.getElementById('scanBtn').addEventListener('click', () => {
               return response.json();
             })
             .then(data => {
+                console.log(data);
               responseData.textContent = `
                 ID: ${data.data.id}
                 Amount: ${data.data.amount}
