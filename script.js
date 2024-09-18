@@ -5,7 +5,7 @@ const API_KEY = '2f53c721-acb2-44db-866a-21bddedeaeb7';     // Thay 'YOUR_API_KE
 
 document.getElementById('scanBtn').addEventListener('click', () => {
     const qrResult = document.getElementById('qrData');
-    const responseTable = document.getElementById('responseTable');
+    const responseTable = document.getElementById('responseContainer');
     const idData = document.getElementById('idData');
     const amountData = document.getElementById('amountData');
     const statusData = document.getElementById('statusData');
@@ -49,7 +49,7 @@ document.getElementById('scanBtn').addEventListener('click', () => {
             .then(data => {
 
                 // Populate the table with API data
-                idData.textContent = data.data.id;
+                idData.textContent = data.data.status == 'PAID' ? 'Valid Ticket' : 'Invalid ticket';
                 amountData.textContent = data.data.amount;
                 statusData.textContent = data.data.status == 'PAID' ? '✅' : '🚫';
                 createdAtData.textContent = data.data.createdAt;

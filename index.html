@@ -13,26 +13,24 @@
     <button id="scanBtn">Start Scanning</button>
     <p id="qrData"></p>
     <!-- Table for displaying response data -->
-<table id="responseTable" class="hidden">
-    <thead>
-      <tr>
-        <th>ID</th>
-        <th>Amount</th>
-        <th>Status</th>
-        <th>Created At</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td id="idData"></td>
-        <td id="amountData"></td>
-        <td id="statusData"></td>
-        <td id="createdAtData"></td>
-      </tr>
-    </tbody>
-  </table>
-  </div>
-
+    <div id="responseContainer" class="response-container">
+        <div class="response-item">
+            <label for="idData">Ticket Validation:</label>
+            <div id="idData"></div>
+        </div>
+        <div class="response-item">
+            <label for="amountData">Amount:</label>
+            <div id="amountData"></div>
+        </div>
+        <div class="response-item">
+            <label for="statusData">Status:</label>
+            <div id="statusData"></div>
+        </div>
+        <div class="response-item">
+            <label for="createdAtData">Created At:</label>
+            <div id="createdAtData"></div>
+        </div>
+    </div>
   <script src="html5-qrcode.min.js"></script>
   <script src="script.js"></script>
 </body>
